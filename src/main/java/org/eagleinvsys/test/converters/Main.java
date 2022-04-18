@@ -17,15 +17,15 @@ public class Main {
         StandardConverter standardConverter = new StandardCsvConverter(new CsvConverter());
 
         Map<String, String> map1 = new HashMap<>();
-        map1.put("Project", "DSG");
-        map1.put("Lead", "Bondar");
+        map1.put("Project", "Test Project 1");
+        map1.put("Lead", " Test Lead 1");
 
         List<Map<String, String>> collectionToConvert = new ArrayList<>();
         collectionToConvert.add(map1);
 
         Map<String, String> map2 = new HashMap<>();
-        map2.put("Project", "JIRA");
-        map2.put("Lead", "Ilushcenko");
+        map2.put("Project", "Test Project 2");
+        map2.put("Lead", "Test Lead 2");
         collectionToConvert.add(map2);
 
         standardConverter.convert(collectionToConvert, fileOut);

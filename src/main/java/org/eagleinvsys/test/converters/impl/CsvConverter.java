@@ -25,7 +25,7 @@ public class CsvConverter implements Converter {
         try {
             for (ConvertibleMessage message : collectionToConvert.getRecords()) {
                 for (String header : collectionToConvert.getHeaders()) {
-                  resultString.append(message.getElement(header)).append(", ");
+                  resultString.append(message.getElement(header)).append(",");
                 }
                 resultString.append("\n");
             }
