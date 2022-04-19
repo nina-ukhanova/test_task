@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
-import org.eagleinvsys.test.converters.ConvertibleCollection;
-import org.eagleinvsys.test.converters.ConvertibleMessage;
+import org.eagleinvsys.test.converters.interfaces.ConvertibleCollection;
+import org.eagleinvsys.test.converters.interfaces.ConvertibleMessage;
 import org.eagleinvsys.test.converters.exception.MapsContainDifferentKeySetException;
 
 @AllArgsConstructor
@@ -31,13 +32,6 @@ public class ConvertibleCollectionImpl implements ConvertibleCollection {
         return records;
     }
 
-    public void addToHeaders(String header) {
-        if (CollectionUtils.isEmpty(headers)) {
-            headers = new ArrayList<>();
-        }
-        headers.add(header);
-    }
-
     public void addToRecords(ConvertibleMessage message) {
         if (CollectionUtils.isEmpty(records)) {
             records = new ArrayList<>();
@@ -54,10 +48,12 @@ public class ConvertibleCollectionImpl implements ConvertibleCollection {
             return convertibleCollection;
         }
 
+        List<Set<String>> elementIdList = collectionToConvert.stream().map(Map::keySet).collect(Collectors.toList());
+
         for (Map<String, String> elementsMap : collectionToConvert) {
-            for (Map<String, String> mapToCompare : collectionToConvert) {
-                if (!compareMaps(elementsMap, mapToCompare)) {
-                    throw new MapsContainDifferentKeySetException();
+            for (Set<String> elementIds : elementIdList) {
+                if (!compareSets(elementsMap.keySet(), elementIds)) {
+                    throw new MapsContainDifferentKeySetException("Maps in the list should contain the same key sets");
                 }
             }
         }
@@ -68,10 +64,9 @@ public class ConvertibleCollectionImpl implements ConvertibleCollection {
         }
 
         return convertibleCollection;
-
     }
 
-    public static boolean compareMaps(Map<String, String> map1, Map<String, String> map2) {
-        return map1.keySet().equals(map2.keySet());
+    public static boolean compareSets(Set<String> set1, Set<String> set2) {
+        return set1.equals(set2);
     }
 }

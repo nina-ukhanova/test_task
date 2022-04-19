@@ -1,8 +1,9 @@
-package org.eagleinvsys.test.converters;
+package org.eagleinvsys.test.converters.interfaces;
 
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
+import org.eagleinvsys.test.converters.exception.MapsContainDifferentKeySetException;
 
 public interface StandardConverter {
 
@@ -12,6 +13,7 @@ public interface StandardConverter {
      * @param collectionToConvert collection to convert. All maps must have the same set of keys
      * @param outputStream        output stream to write results to
      */
-    void convert(List<Map<String, String>> collectionToConvert, OutputStream outputStream);
+    void convert(List<Map<String, String>> collectionToConvert, OutputStream outputStream)
+            throws MapsContainDifferentKeySetException;
 
 }

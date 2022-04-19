@@ -1,13 +1,12 @@
 package org.eagleinvsys.test.converters.impl;
 
-import org.eagleinvsys.test.converters.ConvertibleCollection;
-import org.eagleinvsys.test.converters.StandardConverter;
-import org.eagleinvsys.test.converters.exception.MapsContainDifferentKeySetException;
-import org.eagleinvsys.test.converters.impl.collection.ConvertibleCollectionImpl;
-
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
+import org.eagleinvsys.test.converters.interfaces.ConvertibleCollection;
+import org.eagleinvsys.test.converters.interfaces.StandardConverter;
+import org.eagleinvsys.test.converters.exception.MapsContainDifferentKeySetException;
+import org.eagleinvsys.test.converters.impl.collection.ConvertibleCollectionImpl;
 
 public class StandardCsvConverter implements StandardConverter {
 
@@ -24,14 +23,11 @@ public class StandardCsvConverter implements StandardConverter {
      * @param outputStream        output stream to write CSV conversion result as text to
      */
     @Override
-    public void convert(List<Map<String, String>> collectionToConvert, OutputStream outputStream) {
-        // TODO: implement by using csvConverter
-        ConvertibleCollection convertibleCollection = null;
-        try {
-            convertibleCollection = ConvertibleCollectionImpl.create(collectionToConvert);
-        } catch (MapsContainDifferentKeySetException exception) {
-            System.out.println("Input Collection cannot be null");
-        }
+    public void convert(List<Map<String, String>> collectionToConvert, OutputStream outputStream)
+            throws MapsContainDifferentKeySetException {
+
+        ConvertibleCollection convertibleCollection = ConvertibleCollectionImpl.create(collectionToConvert);
+
 
         if (collectionToConvert == null) {
             return;
@@ -39,5 +35,4 @@ public class StandardCsvConverter implements StandardConverter {
 
         csvConverter.convert(convertibleCollection, outputStream);
     }
-
 }

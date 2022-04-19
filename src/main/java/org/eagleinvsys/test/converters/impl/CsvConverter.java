@@ -1,9 +1,10 @@
 package org.eagleinvsys.test.converters.impl;
 
 import org.apache.commons.lang3.StringUtils;
-import org.eagleinvsys.test.converters.Converter;
-import org.eagleinvsys.test.converters.ConvertibleCollection;
-import org.eagleinvsys.test.converters.ConvertibleMessage;
+import org.apache.commons.text.StringEscapeUtils;
+import org.eagleinvsys.test.converters.interfaces.Converter;
+import org.eagleinvsys.test.converters.interfaces.ConvertibleCollection;
+import org.eagleinvsys.test.converters.interfaces.ConvertibleMessage;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,15 +19,16 @@ public class CsvConverter implements Converter {
      */
     @Override
     public void convert(ConvertibleCollection collectionToConvert, OutputStream outputStream) {
-        // TODO: implement
         StringBuilder resultString = new StringBuilder(StringUtils.join(
                 collectionToConvert.getHeaders(), ","));
         resultString.append("\n");
         try {
             for (ConvertibleMessage message : collectionToConvert.getRecords()) {
                 for (String header : collectionToConvert.getHeaders()) {
-                  resultString.append(message.getElement(header)).append(",");
+                  resultString.append(StringEscapeUtils
+                          .escapeCsv(message.getElement(header))).append(",");
                 }
+                resultString.deleteCharAt(resultString.length() - 1);
                 resultString.append("\n");
             }
             outputStream.write(resultString.toString().getBytes());
